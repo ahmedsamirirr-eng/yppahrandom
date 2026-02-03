@@ -242,60 +242,26 @@ GALLERY_IMAGES = get_gallery_images()
 
 # Giphy embeds for celebration - two lovely white bear stickers
 BEAR_GIPHY_IDS = [
-    "mCYgN0s9EkpmxkYveQ",   # Cute white polar bear
-    "mMl1DphmngffO",        # White polar bear
+    "l0MYt5jPR6QX5pnqM",   # Milk & Mocha hugging bear couple (Giphy)
+    "https://s3.getstickerpack.com/storage/uploads/sticker-pack/milk-amp-mocha/sticker_12.webp?36206fc85917f1de1805a4ac284e70af&d=200x200"  # Milk & Mocha bear couple sticker
 ]
 
-# YouTube video as background music (audio only - video is hidden)
-YOUTUBE_VIDEO_ID = "NrqGTgl3iFw"  # https://www.youtube.com/watch?v=NrqGTgl3iFw
+# The Video ID for Amr Diab - Afelty El Le'ba
+YOUTUBE_VIDEO_ID = "NrqGTgl3iFw"
 
-# YouTube as background music - autoplay on page load (hidden video), fallback Play button
-# Note: Browsers often block autoplay with sound; click "Play music" if it doesn't start
 st.markdown(f"""
-<div id="yt-music-container" style="position: fixed; left: -9999px; top: 0; width: 2px; height: 2px; z-index: 9997;"></div>
-<button id="play-music-btn" type="button" style="
-    position: fixed; bottom: 16px; right: 16px; z-index: 9999;
-    padding: 8px 14px; border-radius: 20px; border: 2px solid rgba(255,182,193,0.8);
-    background: linear-gradient(145deg, #ffe8ee 0%, #ffd6e0 100%); color: #c41e3a;
-    font-family: Quicksand, sans-serif; font-weight: 600; font-size: 14px;
-    cursor: pointer; box-shadow: 0 4px 15px rgba(255,105,135,0.25);
-">🔊 Play music</button>
-<script>
-(function() {{
-    var ytPlayer = null;
-    function startMusic() {{
-        if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
-        try {{
-            ytPlayer.unMute();
-            ytPlayer.setVolume(25);
-            ytPlayer.playVideo();
-            var btn = document.getElementById('play-music-btn');
-            if (btn) {{ btn.textContent = '🔊 Music on'; btn.style.opacity = '0.7'; }}
-        }} catch (e) {{}}
-    }}
-    window.onYouTubeIframeAPIReady = function() {{
-        ytPlayer = new YT.Player('yt-music-container', {{
-            height: '2', width: '2',
-            videoId: '{YOUTUBE_VIDEO_ID}',
-            playerVars: {{ autoplay: 1, loop: 1, playlist: '{YOUTUBE_VIDEO_ID}', controls: 0, mute: 0 }},
-            events: {{ 'onReady': function(ev) {{
-                try {{
-                    ev.target.unMute();
-                    ev.target.setVolume(25);
-                    ev.target.playVideo();
-                    document.getElementById('play-music-btn').textContent = '🔊 Music on';
-                    document.getElementById('play-music-btn').style.opacity = '0.7';
-                }} catch (e) {{}}
-                }} }}
-        }});
-    }};
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.getElementsByTagName('script')[0].parentNode.insertBefore(tag, document.getElementsByTagName('script')[0]);
-    document.getElementById('play-music-btn').addEventListener('click', startMusic);
-    document.body.addEventListener('click', startMusic, {{ once: true }});
-}})();
-</script>
+<div style="display: flex; justify-content: center; margin: 20px 0;">
+    <iframe 
+        width="640" 
+        height="360" 
+        src="https://www.youtube.com/embed/{YOUTUBE_VIDEO_ID}?rel=0&modestbranding=1&autoplay=0" 
+        title="YouTube video player" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        allowfullscreen
+        style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);"
+    ></iframe>
+</div>
 """, unsafe_allow_html=True)
 
 # Love words to show on the page
@@ -409,27 +375,28 @@ else:
         unsafe_allow_html=True,
     )
 
-    st.markdown('<div class="valentine-card">', unsafe_allow_html=True)
+    # st.markdown('<div class="valentine-card">', unsafe_allow_html=True)
     st.markdown(
         '<p class="celebration-text">YAAAAAAAAH! 🎉💘</p>',
         unsafe_allow_html=True,
     )
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("</div style='text-align:center;>", unsafe_allow_html=True)
 
-    st.markdown("<br>", unsafe_allow_html=True)
-    # Two lovely white bear stickers (Giphy embeds) side by side
-    bear_col1, bear_col2 = st.columns(2)
-    for i, giphy_id in enumerate(BEAR_GIPHY_IDS):
-        with (bear_col1 if i == 0 else bear_col2):
+    # st.markdown("<br>", unsafe_allow_html=True)
+
+    # Centered vertical layout
+    st.markdown("<div style='text-align:center;'>", unsafe_allow_html=True)
+
+    for bear in BEAR_GIPHY_IDS:
+        if "giphy" in bear or bear.startswith("l0"):
             st.markdown(
-                f'<div style="text-align: center; border-radius: 16px; overflow: hidden; '
-                'box-shadow: 0 8px 25px rgba(255,105,135,0.2); margin: 0 auto;">'
-                f'<iframe src="https://giphy.com/embed/{giphy_id}" width="240" height="240" '
-                'frameBorder="0" class="giphy-embed" allowFullScreen referrerPolicy="no-referrer">'
-                '</iframe></div>',
-                unsafe_allow_html=True,
+                f'<iframe src="https://giphy.com/embed/{bear}" width="200" height="200" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>',
+                unsafe_allow_html=True
             )
-    st.markdown("<br><br>", unsafe_allow_html=True)
+        else:
+            st.image(bear, width=200)
+
+    st.markdown("</div style='text-align:center;>", unsafe_allow_html=True)
 
     # ---- MEMORY GALLERY (images from local images folder) ----
     st.markdown('<p class="gallery-title">💝 Our Memories 💝</p>', unsafe_allow_html=True)
@@ -450,10 +417,16 @@ else:
                 with col:
                     idx = row_start + j
                     if idx < n_images:
+                        # Display the image without caption
                         st.image(
                             GALLERY_IMAGES[idx],
-                            use_container_width=True,
-                            caption=f"Memory {idx + 1} 💕",
+                            use_container_width=True
+                        )
+
+                        # Custom caption with styled color
+                        st.markdown(
+                            f"<p style='color:#555555; text-align:center;'>Memory {idx + 1} 💕</p>",
+                            unsafe_allow_html=True
                         )
     st.markdown("<br><br>", unsafe_allow_html=True)
     st.markdown(
